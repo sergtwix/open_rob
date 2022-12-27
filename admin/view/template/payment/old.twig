@@ -31,7 +31,14 @@
             <div class="card-header"><i class="fas fa-pencil-alt"></i> {{ text_edit }}</div>
             <div class="card-body">
                 <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-payment" class="form-horizontal">
-                    <div class="row mb-3">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a href="#tab_general" data-bs-toggle="tab" class="nav-link active">{{ text_tab_general }}</a></li>
+                        <li class="nav-item"><a href="#tab_crypto" data-bs-toggle="tab" class="nav-link">{{ text_tab_crypto }}</a></li>
+                        <li class="nav-item"><a href="#tab_advanced" data-bs-toggle="tab" class="nav-link">{{ text_tab_advanced }}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_general">
+                            <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="input-status">{{ entry_status }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
@@ -530,28 +537,42 @@
                                     <small class="text-muted form-text">{{ api_key_info }}</small>
                                 </div>
                             </div>
-                            <div class="row mb-3 justify-content-center">
+                        </div>
+                        <div class="tab-pane" id="tab_crypto">
+                            <div>
                                 <div class="col-12 text-center" style="margin-bottom: 20px">
                                     <label class="control-label text-center" style="float: none !important;">
                                         {{ entry_cryptocurrencies }}
-                                    </label>                                    
+                                    </label>
+                                    <p>
+                                        {{ help_cryptocurrencies }}
+                                    </p>
                                 </div>
-                                <div class="col-sm-4 center">                               
-                                    <input type="hidden" id="cryptapi_cryptocurrencies_array_cache" name="payment_cryptapi_cryptocurrencies_array_cache"
-                                    value='{{ payment_cryptapi_cryptocurrencies_array|json_encode() }}'>
-                                    
-                                        <select name="payment_cryptapi_cryptocurrencies[]" multiple="multiple" size="10" id="payment_cry" class="form-select">
-                                                {% for ticker, coin in payment_cryptapi_cryptocurrencies_array %}
-                                                <option value='{{ ticker }}'
-                                                    {{ payment_cryptapi_cryptocurrencies[ticker]  is defined and payment_cryptapi_cryptocurrencies[ticker]  == ticker ? 'selected="selected"' : '' }}
-                                                    >{{ coin['name'] }}
-                                                </option>
-                                                {% endfor %}                                            
-                                        </select>                                        
-                                    
-                                </div>        
+                                <input type="hidden" id="cryptapi_cryptocurrencies_array_cache" name="payment_cryptapi_cryptocurrencies_array_cache"
+                                       value='{{ payment_cryptapi_cryptocurrencies_array|json_encode() }}'>
+                                {% for ticker, coin in payment_cryptapi_cryptocurrencies_array %}
+                                    <div class="row mb-3">
+                                        <div class="col-sm-2 col-form-label d-flex align-items-center">
+                                            <input class="form-check-inline" type='checkbox' name='payment_cryptapi_cryptocurrencies[{{ ticker }}]' id="cryptapi_cryptocurrencies_{{ ticker }}"
+                                                   value='{{ ticker }}' {{ payment_cryptapi_cryptocurrencies[ticker]  is defined and payment_cryptapi_cryptocurrencies[ticker]  == ticker ? 'checked="checked"' : '' }} />
+                                            <img style="pointer-events: none !important;" width="24" class="img-fluid ms-2" src="{{ coin['logo'] }}" />
+                                            <label class="control-label d-inline-flex align-items-center text-start ms-2" data-bs-toggle="tooltip" data-bs-placement="right" for="cryptapi_cryptocurrencies_{{ ticker }}" title="{{ help_cryptocurrency }} {{ coin['name'] }}">
+                                                {{ coin['name'] }}{{ info_icon }}
+                                            </label>
+
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" id="cryptapi_cryptocurrencies_address_{{ ticker }}" name='payment_cryptapi_cryptocurrencies_address_{{ ticker }}'
+                                                       placeholder="{{ coin['name'] }} Wallet" value="{{ attribute(_context, 'payment_cryptapi_cryptocurrencies_address_' ~ ticker) }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div class="row mb-3">
+                        </div>
+                        <div class="tab-pane" id="tab_advanced">
+                            <div class="row">
                                 <div class="col-12">
                                     <div class="input-group">
                                         <input class="form-check-inline" type='checkbox' name='payment_cryptapi_disable_conversion' id="cryptapi_disable_conversion"
@@ -563,6 +584,8 @@
                                         {{ disable_conversion_warn }}</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
