@@ -23,56 +23,19 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
             $order_total = floatval($order['total']);
 
-          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          ///////////////////////////////////////////////////BEGIN///////////////////////////////////////////////////////////////////////////
-          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
-            $callbackUrl = $this->url->link('extension/cryptapi/payment/cryptapi|callback', 'order_id=' . $this->session->data['order_id'] . '&nonce=' . $nonce, true);
-            $callbackUrl = str_replace('&amp;', '&', $callbackUrl);
-            $apiKey = $this->config->get('payment_cryptapi_api_key');
-            $da_cry = array();
-
             foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
-              if (!empty($addressOut = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_address_out($selected, $apiKey, $callbackUrl))){
-                $da_cry += [
-                  $selected=>$selected,
-                ];
-              }
-            }
-            //var_dump($da_cry);
-            if (empty($da_cry)){
-              return false;
+                foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
+                    if ($selected === $token) {
+                        $data['cryptocurrencies'] += [
+                            $token => $coin,
+                        ];
+                    }
+                }
             }
 
-            foreach ($da_cry as $selected) {
-                  foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
-                      if ($selected === $token) {
-                          $data['cryptocurrencies'] += [
-                              $token => $coin,
-                          ];
-                      }
-                  }
-              }
-          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          ///////////////////////////////////////////////////END///////////////////////////////////////////////////////////////////////////
-          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-            // foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
-            //     foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
-            //         if ($selected === $token) {
-            //             $data['cryptocurrencies'] += [
-            //                 $token => $coin,
-            //             ];
-            //         }
-            //     }
-            // }
-
-            // foreach ($data['cryptocurrencies'] as $token => $coin) {
-            //     $data['payment_cryptapi_address_' . $token] = $this->config->get('payment_cryptapi_address_' . $token);
-            // }
+            foreach ($data['cryptocurrencies'] as $token => $coin) {
+                $data['payment_cryptapi_address_' . $token] = $this->config->get('payment_cryptapi_address_' . $token);
+            }
 
             // Fee
             $fee = $this->config->get('payment_cryptapi_fees');
@@ -84,14 +47,14 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $data['symbol_right'] = $currencySymbolRight;
             $selected = $this->session->data['cryptapi_selected'] ?? '';
             $cryptapiFee = 0;
-            $apiKey = $this->config->get('payment_cryptapi_api_key');
+
             if ($selected) {
                 if ($fee !== 0) {
                     $cryptapiFee += floatval($fee) * $order_total;
                 }
 
                 if ($blockchain_fee) {
-                    $cryptapiFee += floatval(\Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_estimate($this->session->data['cryptapi_selected'])->$currency, $apiKey);
+                    $cryptapiFee += floatval(\Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_estimate($this->session->data['cryptapi_selected'])->$currency);
                 }
             }
 
@@ -116,16 +79,13 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $this->load->model('extension/cryptapi/payment/cryptapi');
 
         $this->session->data['cryptapi_selected'] = $_POST['cryptapi_coin'];
-        //var_dump($this->session->data['cryptapi_selected']);
-
     }
 
     public function confirm()
     {
         // Library
         require(DIR_EXTENSION . 'cryptapi/system/library/cryptapi.php');
-        //print('++++++++++++++++++++++++++++++++++++-');
-        //return;
+
         $json = array();
 
         if ($this->config->get('payment_cryptapi_status')) {
@@ -137,13 +97,11 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $total = $this->currency->format($order_info['total'] + $cryptoFee, $order_info['currency_code'], 1.00000, false);
 
             $selected = $this->request->post['cryptapi_coin'];
-            //$address = $this->config->get('payment_cryptapi_cryptocurrencies_address_' . $selected);
-            // print('---------------------------');
-            // var_dump($selected);
-            //return;
+            $address = $this->config->get('payment_cryptapi_cryptocurrencies_address_' . $selected);
+
             $apiKey = $this->config->get('payment_cryptapi_api_key');
 
-            if (!empty($apiKey)) {
+            if (!empty($address) || !empty($apiKey)) {
                 $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
 
                 $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
@@ -153,26 +111,23 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 $minTx = floatval($info->minimum_transaction_coin);
 
                 $cryptoTotal = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($order_info['currency_code'], $selected, $total, $disable_conversion);
-                //var_dump($selected);
-                // return;
+
                 if ($cryptoTotal < $minTx) {
                     $message = $this->module->l('Payment error: ', 'validation');
                     $message .= $this->module->l('Value too low, minimum is', 'validation');
                     $message .= ' ' . $minTx . ' ' . strtoupper($selected);
                     $json['error'] = $message;
                 } else {
-
-
                     $callbackUrl = $this->url->link('extension/cryptapi/payment/cryptapi|callback', 'order_id=' . $this->session->data['order_id'] . '&nonce=' . $nonce, true);
                     $callbackUrl = str_replace('&amp;', '&', $callbackUrl);
 
-                    $helper = new \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper($selected, $apiKey, $callbackUrl, [], true);
+                    $helper = new \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper($selected, $address, $apiKey, $callbackUrl, [], true);
                     $addressIn = $helper->get_address();
 
                     $qrCodeDataValue = $helper->get_qrcode($cryptoTotal, $qr_code_size);
                     $qrCodeData = $helper->get_qrcode('', $qr_code_size);
                     $paymentURL = $this->url->link('extension/cryptapi/payment/cryptapi|pay', 'order_id=' . $this->session->data['order_id'] . 'nonce=' . $nonce, true);
-                    //return;
+
                     $paymentData = [
                         'cryptapi_fee' => $cryptoFee,
                         'cryptapi_nonce' => $nonce,
@@ -199,8 +154,6 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             }
         }
 
-        // var_dump($selected);
-        // return;
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
@@ -255,7 +208,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         if (!empty($metaData)) {
             $metaData = json_decode($metaData, true);
         }
-        print('-------------------------------------------------------------');
+
         $total = $metaData['cryptapi_total_fiat'];
         $currencySymbolLeft = $this->model_localisation_currency->getCurrencies()[$order['currency_code']]['symbol_left'];
         $currencySymbolRight = $this->model_localisation_currency->getCurrencies()[$order['currency_code']]['symbol_right'];
@@ -582,7 +535,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $metaData = json_decode($this->model_extension_cryptapi_payment_cryptapi->getPaymentData($order['order_id']), true);
 
-        $history = json_decode($metaData['cryptapi_history'], true); // <<-something's wrong
+        $history = json_decode($metaData['cryptapi_history'], true);// <<-something's wrong
 
         $calc = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::calc_order($history, $metaData['cryptapi_total'], $metaData['cryptapi_total_fiat']);
 
@@ -618,10 +571,10 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $orderFetch = $this->model_checkout_order->getOrder($order_id);
         $order = $this->model_extension_cryptapi_payment_cryptapi->getOrder($order_id);
-
+        
         $orderObj = isset($order['response']) ? json_decode($order['response']) : '';
 
-        if (!$orderObj) {
+        if(!$orderObj) {
             return;
         }
 
