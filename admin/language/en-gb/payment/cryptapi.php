@@ -1,9 +1,10 @@
 <?php
 
 $base_url = sprintf(
-    "%s://%s",
+    "%s://%s:%s",
     $_SERVER['HTTPS'] ? 'https' : 'http',
-    $_SERVER['SERVER_NAME']
+    $_SERVER['SERVER_NAME'],
+    $_SERVER['SERVER_PORT'],
 );
 
 // Heading
