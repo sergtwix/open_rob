@@ -331,11 +331,11 @@ class CryptAPIHelper
     public static function base_url(): string
     {
         return sprintf(
-          "%s://%s",
-          //"%s://%s:%s",
+          //"%s://%s",
+          "%s://%s:%s",
           $_SERVER['HTTPS'] ? 'https' : 'http',
           $_SERVER['SERVER_NAME'],
-          //$_SERVER['SERVER_PORT'],
+          $_SERVER['SERVER_PORT'],
         );
     }
 
