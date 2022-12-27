@@ -186,7 +186,7 @@ class CryptAPIHelper
 
     public static function get_supported_coins()
     {
-        $info = CryptAPIHelper::get_info(null, true, null);
+        $info = CryptAPIHelper::get_info(null, true);
 
         if (empty($info)) {
             return null;
@@ -220,13 +220,13 @@ class CryptAPIHelper
     }
 
 
-    public static function get_info($coin = null, $assoc = false, $api_key = null)
+    public static function get_info($coin = null, $assoc = false)
     {
         $params = [];
 
-        if (!empty($api_key)) {
-          $params['apikey'] = $api_key;
-      }
+      //   if (!empty($api_key)) {
+      //     $params['apikey'] = $api_key;
+      // }
         if (empty($coin)) {
             $params['prices'] = '0';
         }
