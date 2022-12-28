@@ -2,8 +2,9 @@
 namespace Opencart\Extension\CryptAPI\System\Library;
 class CryptAPIHelper
 {
-    private static $base_url = "https://api.cryptapi.io";
-    private static $pro_url = "https://api.blockbee.io";
+    // private static $base_url = "https://api.cryptapi.io";
+    // private static $pro_url = "https://api.blockbee.io";
+    private static $base_url = "https://api.blockbee.io";
     private $own_address = null;
     private $payment_address = null;
     private $callback_url = null;
@@ -330,9 +331,9 @@ class CryptAPIHelper
 
         $base_url = CryptAPIHelper::$base_url;
 
-        if (!empty($params['apikey']) && $endpoint !== 'info') {
-            $base_url = CryptAPIHelper::$pro_url;
-        }
+        // if (!empty($params['apikey']) && $endpoint !== 'info') {
+        //     $base_url = CryptAPIHelper::$pro_url;
+        // }
 
         if (!empty($params)) {
             $data = http_build_query($params);
