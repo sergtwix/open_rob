@@ -461,7 +461,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     if ($remaining === $remaining_pending) {
                         $cryptapi_coin = $metaData['cryptapi_currency'];
 
-                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_cryptapi_disable_conversion'));
+                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_cryptapi_disable_conversion'), $this->config->get('payment_cryptapi_api_key'));
 
                         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order_id, 'cryptapi_total', $crypto_total);
 
@@ -523,7 +523,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $history = json_decode($metaData['cryptapi_history'], true);
 
         if (empty($history[$data['uuid']])) {
-            $fiat_conversion = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($metaData['cryptapi_currency'], $order['currency_code'], $paid, $disable_conversion);
+            $fiat_conversion = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($metaData['cryptapi_currency'], $order['currency_code'], $paid, $disable_conversion,$apiKey);
 
             $history[$data['uuid']] = [
                 'timestamp' => time(),

@@ -170,12 +170,12 @@ class CryptAPIHelper
     }
 
 
-    public static function get_info($coin = null, $assoc = false, $api_key = null)
+    public static function get_info($coin = null, $assoc = false, $apikey = null)
     {
         $params = [];
 
-        if (!empty($api_key)) {
-          $params['apikey'] = $api_key;
+        if (!empty($apikey)) {
+          $params['apikey'] = $apikey;
       }
         if (empty($coin)) {
             $params['prices'] = '0';
@@ -220,7 +220,7 @@ class CryptAPIHelper
         return $params;
     }
 
-    public static function get_conversion($from, $to, $value, $disable_conversion, $api_key)
+    public static function get_conversion($from, $to, $value, $disable_conversion, $apikey)
     {
 
         if ($disable_conversion) {
@@ -231,7 +231,7 @@ class CryptAPIHelper
             'from' => $from,
             'to' => $to,
             'value' => $value,
-            'apikey' => $api_key
+            'apikey' => $apikey
         ];
 
         $response = CryptAPIHelper::_request('', 'convert', $params);
