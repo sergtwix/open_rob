@@ -1,4 +1,4 @@
-[<img src="https://blockbee.io/static/assets/images/blockbee_logo_nospaces.png" width="300"/>](image.png)
+[<a href="https://blockbee.io/"><img src="https://blockbee.io/static/assets/images/blockbee_logo_nospaces.png" width="300"/></a>](image.png)
 
 # BlockBEE Payment Gateway for OpenCart
 Accept cryptocurrency payments on your OpenCart store
