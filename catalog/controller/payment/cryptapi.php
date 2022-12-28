@@ -23,6 +23,43 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
             $order_total = floatval($order['total']);
 
+             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          ///////////////////////////////////////////////////BEGIN///////////////////////////////////////////////////////////////////////////
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+          $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
+          $callbackUrl = $this->url->link('extension/cryptapi/payment/cryptapi|callback', 'order_id=' . $this->session->data['order_id'] . '&nonce=' . $nonce, true);
+          $callbackUrl = str_replace('&amp;', '&', $callbackUrl);
+          $apiKey = $this->config->get('payment_cryptapi_api_key');
+          $da_cry = array();
+
+          foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
+            if (!empty($addressOut = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_address_out($selected, $apiKey, $callbackUrl))){
+              $da_cry += [
+                $selected=>$selected,
+              ];
+            }
+          }
+          //var_dump($da_cry);
+          if (empty($da_cry)){
+            return false;
+          }
+
+          foreach ($da_cry as $selected) {
+                foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
+                    if ($selected === $token) {
+                        $data['cryptocurrencies'] += [
+                            $token => $coin,
+                        ];
+                    }
+                }
+            }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////END///////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
             foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
                 foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
                     if ($selected === $token) {

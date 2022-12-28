@@ -2,9 +2,8 @@
 namespace Opencart\Extension\CryptAPI\System\Library;
 class CryptAPIHelper
 {
-    private static $base_url = "https://api.cryptapi.io";
-    private static $pro_url = "https://api.blockbee.io";
-    private $own_address = null;
+  
+    private static $base_url = "https://api.blockbee.io";
     private $payment_address = null;
     private $callback_url = null;
     private $coin = null;
@@ -12,9 +11,9 @@ class CryptAPIHelper
     private $parameters = [];
     private $api_key = null;
 
-    public function __construct($coin, $own_address, $api_key, $callback_url, $parameters = [], $pending = false)
+    public function __construct($coin, $api_key, $callback_url, $parameters = [], $pending = false)
     {
-        $this->own_address = $own_address;
+
         $this->callback_url = $callback_url;
         $this->api_key = $api_key;
         $this->coin = $coin;
@@ -31,7 +30,7 @@ class CryptAPIHelper
 
         $api_key = $this->api_key;
 
-        if (empty($api_key) && empty($this->own_address)) {
+        if (empty($api_key) ) {
             return null;
         }
 
@@ -40,27 +39,12 @@ class CryptAPIHelper
             $req_parameters = http_build_query($this->parameters);
             $callback_url = "{$this->callback_url}?{$req_parameters}";
         }
-
-        if (!empty($api_key) && empty($this->own_address)) {
-            $ca_params = [
-                'apikey' => $api_key,
-                'callback' => $callback_url,
-                'pending' => $this->pending,
-            ];
-        } elseif (empty($api_key) && !empty($this->own_address)) {
-            $ca_params = [
-                'callback' => $callback_url,
-                'address' => $this->own_address,
-                'pending' => $this->pending,
-            ];
-        } elseif (!empty($api_key) && !empty($this->own_address)) {
-            $ca_params = [
-                'apikey' => $api_key,
-                'callback' => $callback_url,
-                'address' => $this->own_address,
-                'pending' => $this->pending,
-            ];
-        }
+        $ca_params = [
+                  'apikey' => $api_key,
+                  'callback' => $callback_url,
+                  'pending' => $this->pending,
+                  'convert' => 1,
+              ];
 
         $response = CryptAPIHelper::_request($this->coin, 'create', $ca_params);
 
@@ -80,6 +64,7 @@ class CryptAPIHelper
 
         $params = [
             'callback' => $this->callback_url,
+            'apikey' => $this->api_key
         ];
 
         $response = CryptAPIHelper::_request($this->coin, 'logs', $params);
@@ -99,12 +84,14 @@ class CryptAPIHelper
             $params = [
                 'address' => $this->payment_address,
                 'size' => $size,
+                'apikey' => $this->api_key,
             ];
         } else {
             $params = [
                 'address' => $this->payment_address,
                 'value' => $value,
                 'size' => $size,
+                'apikey' => $this->api_key,
             ];
         }
 
@@ -117,7 +104,7 @@ class CryptAPIHelper
         return null;
     }
 
-    public static function get_static_qrcode($address, $coin, $value, $size = 300)
+    public static function get_static_qrcode($address, $coin, $value, $apikey, $size = 300)
     {
         if (empty($address)) {
             return null;
@@ -128,11 +115,13 @@ class CryptAPIHelper
                 'address' => $address,
                 'value' => $value,
                 'size' => $size,
+                'apikey' => $apikey,
             ];
         } else {
             $params = [
                 'address' => $address,
                 'size' => $size,
+                'apikey' => $apikey,
             ];
         }
 
@@ -147,7 +136,7 @@ class CryptAPIHelper
 
     public static function get_supported_coins()
     {
-        $info = CryptAPIHelper::get_info(null, true);
+        $info = CryptAPIHelper::get_info(null, true, null);
 
         if (empty($info)) {
             return null;
@@ -181,10 +170,13 @@ class CryptAPIHelper
     }
 
 
-    public static function get_info($coin = null, $assoc = false)
+    public static function get_info($coin = null, $assoc = false, $apikey = null)
     {
         $params = [];
 
+        if (!empty($apikey)) {
+          $params['apikey'] = $apikey;
+      }
         if (empty($coin)) {
             $params['prices'] = '0';
         }
@@ -220,15 +212,15 @@ class CryptAPIHelper
         }
 
         foreach ($params as &$val) {
-            if(is_string($val)) {
+            //if(is_string($val)) {
                 $val = trim($val);
-            }
+            //}
         }
 
         return $params;
     }
 
-    public static function get_conversion($from, $to, $value, $disable_conversion)
+    public static function get_conversion($from, $to, $value, $disable_conversion, $apikey)
     {
 
         if ($disable_conversion) {
@@ -239,6 +231,7 @@ class CryptAPIHelper
             'from' => $from,
             'to' => $to,
             'value' => $value,
+            'apikey' => $apikey
         ];
 
         $response = CryptAPIHelper::_request('', 'convert', $params);
@@ -250,12 +243,13 @@ class CryptAPIHelper
         return null;
     }
 
-    public static function get_estimate($coin)
+    public static function get_estimate($coin, $api_key)
     {
 
         $params = [
             'addresses' => 1,
             'priority' => 'default',
+            'apikey' => $api_key,
         ];
 
         $response = CryptAPIHelper::_request($coin, 'estimate', $params);
@@ -287,9 +281,10 @@ class CryptAPIHelper
     public static function base_url(): string
     {
         return sprintf(
-            "%s://%s",
-            $_SERVER['HTTPS'] ? 'https' : 'http',
-            $_SERVER['SERVER_NAME']
+          "%s://%s:%s",
+          $_SERVER['HTTPS'] ? 'https' : 'http',
+          $_SERVER['SERVER_NAME'],
+          $_SERVER['SERVER_PORT'],
         );
     }
 
@@ -329,9 +324,13 @@ class CryptAPIHelper
 
         $base_url = CryptAPIHelper::$base_url;
 
-        if (!empty($params['apikey']) && $endpoint !== 'info') {
-            $base_url = CryptAPIHelper::$pro_url;
-        }
+        // if (!empty($params['apikey']) && $endpoint !== 'info') {
+        //     $base_url = CryptAPIHelper::$pro_url;
+        // }
+
+      //   if($endpoint === 'info' || $endpoint === 'convert' || $endpoint === 'logs') {
+      //     $base_url = CryptAPIHelper::$cryptapi_url;
+      // }   
 
         if (!empty($params)) {
             $data = http_build_query($params);
