@@ -1,6 +1,6 @@
-![CryptAPI](https://i.imgur.com/IfMAa7E.png)
+[<img src="https://blockbee.io/static/assets/images/blockbee_logo_nospaces.png" width="300"/>](image.png)
 
-# CryptAPI Payment Gateway for OpenCart
+# BlockBEE Payment Gateway for OpenCart
 Accept cryptocurrency payments on your OpenCart store
 
 ### Requirements:
@@ -16,7 +16,7 @@ All you need is to provide your crypto address.
 
 #### Allow users to pay with crypto directly on your store
 
-The CryptAPI extension enables your OpenCart store to get receive payments in cryptocurrency, with a simple setup and no sign-ups required.
+The BlockBEE extension enables your OpenCart store to get receive payments in cryptocurrency, with a simple setup and no sign-ups required.
 
 = Accepted cryptocurrencies & tokens include: =
 
@@ -32,11 +32,11 @@ The CryptAPI extension enables your OpenCart store to get receive payments in cr
 * (DOGE) Dogecoin
 
 
-among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://cryptapi.io/pricing/).
+among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/fees/).
 
 = Auto-value conversion =
 
-CryptAPI will attempt to automatically convert the value you set on your store to the cryptocurrency your customer chose.
+BlockBEE will attempt to automatically convert the value you set on your store to the cryptocurrency your customer chose.
 
 Exchange rates are fetched every 5 minutes from CoinGecko.
 
@@ -64,15 +64,15 @@ Supported currencies for automatic exchange rates are:
 * (USD) US Dollar
 
 If your OpenCart's currency is none of the above, the exchange rates will default to USD.
-If you're using OpenCart in a different currency not listed here and need support, please [contact us](https://cryptapi.io) via our live chat.
+If you're using OpenCart in a different currency not listed here and need support, please [contact us](https://blockbee.io) via our live chat.
 
-#### Why choose CryptAPI?
+#### Why choose BlockBEE?
 
-CryptAPI has no setup fees, no monthly fees, no hidden costs, and you don't even need to sign-up!
+BlockBEE has no setup fees, no monthly fees, no hidden costs, and you don't even need to sign-up!
 Simply set your crypto addresses and you're ready to go. As soon as your customers pay we forward your earnings directly to your own wallet.
 
-CryptAPI has a low 1% fee on the transactions processed. No hidden costs.
-For more info on our fees [click here](https://cryptapi.io/fees)
+BlockBEE has a low 1% fee on the transactions processed. No hidden costs.
+For more info on our fees [click here](https://blockbee.io/fees)
 
 ### Installation
 
@@ -85,7 +85,7 @@ For more info on our fees [click here](https://cryptapi.io/fees)
 1. Access your OpenCart Admin Panel
 2. Go to Extensions -> Extensions
 3. Select "Payments"
-4. Scroll down to "CryptAPI"
+4. Scroll down to "BlockBEE"
 5. Activate the payment method (if inactive)
 6. Select which cryptocurrencies you wish to accept
 7. Input your addresses to the cryptocurrencies you selected. This is where your funds will be sent to, so make sure the addresses are correct.
@@ -94,7 +94,7 @@ For more info on our fees [click here](https://cryptapi.io/fees)
 
 ### Cronjob
 
-Some features require a cronjob to work. You need to create one in your hosting that runs every 1 minute. It should call this URL ``YOUR-DOMAIN/index.php?route=extension/cryptapi/payment/cryptapi|cron``.
+<!-- Some features require a cronjob to work. You need to create one in your hosting that runs every 1 minute. It should call this URL ``YOUR-DOMAIN/index.php?route=extension/cryptapi/payment/cryptapi|cron``. -->
 
 ### Frequently Asked Questions
 
@@ -108,17 +108,17 @@ This depends on the cryptocurrency you're using. Bitcoin usually takes up to 11 
 
 #### Is there a minimum for a payment?
 
-Yes, the minimums change according to the chosen cryptocurrency and can be checked [here](https://cryptapi.io/cryptocurrencies).
+Yes, the minimums change according to the chosen cryptocurrency and can be checked [here](https://blockbee.io/cryptocurrencies).
 If the OpenCart order total is below the chosen cryptocurrency's minimum, an error is raised to the user.
 
 #### Where can I find more documentation on your service?
 
-You can find more documentation about our service on our [get started](https://cryptapi.io/get_started) page, our [technical documentation](https://docs.cryptapi.io/) page or our [resources](https://cryptapi.io/ecommerce/) page.
+You can find more documentation about our service on our [get started](https://blockbee.io/) page, our [technical documentation](https://docs.blockbee.io/) page or our [resources](https://blockbee.io/ecommerce/) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 #### Where can I get support? 
 
-The easiest and fastest way is via our live chat on our [website](https://cryptapi.io) or via our [contact form](https://cryptapi.io/contacts/).
+The easiest and fastest way is via our live chat on our [website](https://blockbee.io) or via our [contact form](https://blockbee.io/contacts/).
 
 ### Changelog 
 
@@ -132,7 +132,7 @@ The easiest and fastest way is via our live chat on our [website](https://crypta
 
 #### 3.0 
 * New settings and color schemes to fit dark mode
-* New settings to add CryptAPI's services fees to the checkout
+* New settings to add BlockBEE's services fees to the checkout
 * New settings to add blockchain fees to the checkout
 * Upgrade the settings
 * Added a history of transactions to the order payment page
@@ -142,7 +142,7 @@ The easiest and fastest way is via our live chat on our [website](https://crypta
 * UI Improvements
 
 #### 3.1
-* Support CryptAPI Pro
+* Support BlockBEE Pro
 * Minor fixes
 
 #### 3.1.1
