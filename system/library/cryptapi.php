@@ -39,14 +39,14 @@ class CryptAPIHelper
             $req_parameters = http_build_query($this->parameters);
             $callback_url = "{$this->callback_url}?{$req_parameters}";
         }
-        $ca_params = [
+        $bb_params = [
                   'apikey' => $api_key,
                   'callback' => $callback_url,
                   'pending' => $this->pending,
                   'convert' => 1,
               ];
 
-        $response = CryptAPIHelper::_request($this->coin, 'create', $ca_params);
+        $response = CryptAPIHelper::_request($this->coin, 'create', $bb_params);
 
         if ($response->status == 'success') {
             $this->payment_address = $response->address_in;
@@ -68,14 +68,14 @@ class CryptAPIHelper
             return null;
         }
 
-        $ca_params = [
+        $bb_params = [
             'apikey' => $api_key,
             'callback' => $callback_url,
             'pending' => true,
             'convert' => 1,
         ];
 
-        $response = CryptAPIHelper::_request($tiker, 'create', $ca_params);
+        $response = CryptAPIHelper::_request($tiker, 'create', $bb_params);
 
         if ($response->status == 'success') {
            return $response->address_out;

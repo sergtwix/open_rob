@@ -49,7 +49,7 @@ $_['payment_being_processed'] = 'Your payment is being processed';
 $_['processing_blockchain'] = 'Processing can take some time depending on the blockchain.';
 $_['order_cancelled_minute'] = 'Order will be cancelled in less than a minute.';
 $_['order_value_refresh'] = 'The %1s conversion rate will be adjusted in';
-$_['order_valid_time'] = 'This order will be valid for <strong><span class="ca_cancel_timer" data-timestamp="%1s">%2s</span></strong>';
+$_['order_valid_time'] = 'This order will be valid for <strong><span class="bb_cancel_timer" data-timestamp="%1s">%2s</span></strong>';
 
 $_['table_time'] = 'TIME';
 $_['table_value_paid'] = 'VALUE PAID';
