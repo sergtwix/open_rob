@@ -33,9 +33,9 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 }
             }
 
-            foreach ($data['cryptocurrencies'] as $token => $coin) {
-                $data['payment_cryptapi_address_' . $token] = $this->config->get('payment_cryptapi_address_' . $token);
-            }
+            // foreach ($data['cryptocurrencies'] as $token => $coin) {
+            //     $data['payment_cryptapi_address_' . $token] = $this->config->get('payment_cryptapi_address_' . $token);
+            // }
 
             // Fee
             $fee = $this->config->get('payment_cryptapi_fees');
@@ -97,11 +97,12 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $total = $this->currency->format($order_info['total'] + $cryptoFee, $order_info['currency_code'], 1.00000, false);
 
             $selected = $this->request->post['cryptapi_coin'];
-            $address = $this->config->get('payment_cryptapi_cryptocurrencies_address_' . $selected);
+            //$address = $this->config->get('payment_cryptapi_cryptocurrencies_address_' . $selected);
 
             $apiKey = $this->config->get('payment_cryptapi_api_key');
 
-            if (!empty($address) || !empty($apiKey)) {
+           // if (!empty($address) || !empty($apiKey)) {
+            if (!empty($apiKey)) {
                 $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
 
                 $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
