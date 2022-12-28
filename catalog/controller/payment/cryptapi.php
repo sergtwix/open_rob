@@ -60,15 +60,15 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
 
 
-            foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
-                foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
-                    if ($selected === $token) {
-                        $data['cryptocurrencies'] += [
-                            $token => $coin,
-                        ];
-                    }
-                }
-            }
+            // foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
+            //     foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
+            //         if ($selected === $token) {
+            //             $data['cryptocurrencies'] += [
+            //                 $token => $coin,
+            //             ];
+            //         }
+            //     }
+            // }
 
             // foreach ($data['cryptocurrencies'] as $token => $coin) {
             //     $data['payment_cryptapi_address_' . $token] = $this->config->get('payment_cryptapi_address_' . $token);
