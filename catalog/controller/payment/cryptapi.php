@@ -107,7 +107,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
                 $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
                 $qr_code_size = $this->config->get('payment_cryptapi_qrcode_size');
-
+                var_dump( $selected);              
                 $info = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_info($selected);
                 $minTx = floatval($info->minimum_transaction_coin);
 
