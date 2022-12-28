@@ -104,7 +104,7 @@ class CryptAPIHelper
         return null;
     }
 
-    public static function get_static_qrcode($address, $coin, $value, $api_key, $size = 300)
+    public static function get_static_qrcode($address, $coin, $value, $apikey, $size = 300)
     {
         if (empty($address)) {
             return null;
@@ -115,13 +115,13 @@ class CryptAPIHelper
                 'address' => $address,
                 'value' => $value,
                 'size' => $size,
-                'apikey' => $api_key,
+                'apikey' => $apikey,
             ];
         } else {
             $params = [
                 'address' => $address,
                 'size' => $size,
-                'apikey' => $api_key,
+                'apikey' => $apikey,
             ];
         }
 
