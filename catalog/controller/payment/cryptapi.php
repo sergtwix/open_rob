@@ -109,7 +109,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 $qr_code_size = $this->config->get('payment_cryptapi_qrcode_size');
                 var_dump( $selected);              
                 $info = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_info($selected, false, $apiKey);
-                var_dump( $info); 
+                //var_dump( $info); 
                 $minTx = floatval($info->minimum_transaction_coin);
 
                 $cryptoTotal = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($order_info['currency_code'], $selected, $total, $disable_conversion);
