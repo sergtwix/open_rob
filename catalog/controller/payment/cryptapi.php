@@ -121,7 +121,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     $callbackUrl = $this->url->link('extension/cryptapi/payment/cryptapi|callback', 'order_id=' . $this->session->data['order_id'] . '&nonce=' . $nonce, true);
                     $callbackUrl = str_replace('&amp;', '&', $callbackUrl);
 
-                    $helper = new \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper($selected, $address, $apiKey, $callbackUrl, [], true);
+                    $helper = new \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper($selected, $apiKey, $callbackUrl, [], true);
                     $addressIn = $helper->get_address();
 
                     $qrCodeDataValue = $helper->get_qrcode($cryptoTotal, $qr_code_size);
@@ -421,7 +421,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $order_timeout = intval($this->config->get('payment_cryptapi_order_cancelation_timeout'));
         $value_refresh = intval($this->config->get('payment_cryptapi_refresh_values'));
         $qrcode_size = intval($this->config->get('payment_cryptapi_qrcode_size'));
-
+        $apiKey = $this->config->get('payment_cryptapi_api_key');
         $response = $this->response->setOutput(json_encode(['status' => 'ok']));
 
         if ($order_timeout === 0 && $value_refresh === 0) {
@@ -468,9 +468,9 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                         $crypto_remaining_total = $calc_cron['remaining_pending'];
 
                         if ($remaining_pending <= $min_tx && $remaining_pending > 0) {
-                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $min_tx, $qrcode_size);
+                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $min_tx, $apiKey, $qrcode_size);
                         } else {
-                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $crypto_remaining_total, $qrcode_size);
+                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $crypto_remaining_total, $apiKey, $qrcode_size);
                         }
 
                         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order_id, 'cryptapi_qrcode_value', $qr_code_data_value['qr_code']);
@@ -499,6 +499,8 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $data = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::process_callback($_GET);
 
         $this->load->model('checkout/order');
+
+        $apiKey = $this->config->get('payment_cryptapi_api_key');
 
         $order = $this->model_checkout_order->getOrder((int)$data['order_id']);
 
@@ -552,9 +554,9 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         }
 
         if ($remaining_pending <= $min_tx) {
-            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $min_tx, $qrcode_size)['qr_code'];
+            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $min_tx, $apiKey, $qrcode_size)['qr_code'];
         } else {
-            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $remaining_pending, $qrcode_size)['qr_code'];
+            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $remaining_pending, $apiKey, $qrcode_size)['qr_code'];
         }
 
         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order['order_id'], 'cryptapi_qrcode_value', $qrcode_conv);
