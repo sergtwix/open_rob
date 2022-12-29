@@ -140,10 +140,10 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $data['payment_cryptapi_title'] = $this->config->get('payment_cryptapi_title');
         }
 
-        if (isset($this->request->post['payment_cryptapi_api_key'])) {
-            $data['payment_cryptapi_api_key'] = $this->request->post['payment_cryptapi_api_key'];
+        if (isset($this->request->post['payment_blockbee_api_key'])) {
+            $data['payment_blockbee_api_key'] = $this->request->post['payment_blockbee_api_key'];
         } else {
-            $data['payment_cryptapi_api_key'] = $this->config->get('payment_cryptapi_api_key');
+            $data['payment_blockbee_api_key'] = $this->config->get('payment_blockbee_api_key');
         }
 
         if (isset($this->request->post['payment_cryptapi_standard_geo_zone_id'])) {

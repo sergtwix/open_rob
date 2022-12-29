@@ -8,7 +8,7 @@ $base_url = sprintf(
 );
 
 // Heading
-$_['heading_title'] = 'CryptAPI';
+$_['heading_title'] = 'BlockBEE';
 
 $_['title'] = 'Title';
 
@@ -19,14 +19,14 @@ $_['never'] = 'Never';
 
 // Text
 $_['text_extension'] = 'Extensions';
-$_['text_success'] = 'Success: You have modified your CryptAPI details!';
-$_['text_edit'] = 'Edit CryptAPI';
+$_['text_success'] = 'Success: You have modified your BlockBEE details!';
+$_['text_edit'] = 'Edit BlockBEE';
 $_['text_cryptapi'] = '<a target="_BLANK" href="https://blockbee.io/"><img src="' . $base_url . '/extension/cryptapi/admin/view/image/payment/blockbee.png" alt="cryptapi" title="cryptapi" style="border: 1px solid #EEEEEE; height:37px" /></a>';
-$_['text_connect_cryptapi'] = 'This module allows you to accept CryptAPI Payments securely.';
+$_['text_connect_cryptapi'] = 'This module allows you to accept BlockBEE Payments securely.';
 $_['text_cryptapi_image'] = '<a target="_BLANK" href="https://blockbee.io/"><img src="' . $base_url . '/extension/cryptapi/admin/view/image/payment/blockbee.png" alt="cryptapi" title="cryptapi" style="height:50px" class="img-fluid" /></a>';
 $_['text_cryptapi_suppport'] = 'If you need any help or have any suggestion, contact us via the live chat on our <a target="_blank" href="https://blockbee.io">website</a>';
 $_['text_blockchain_fees'] = 'This will add an estimation of the blockchain fee to the order value';
-$_['text_fees'] = 'Set the CryptAPI service fee you want to charge the costumer. Note: Fee you want to charge your costumers (to cover CryptAPI\'s fees fully or partially)';
+$_['text_fees'] = 'Set the BlockBEE service fee you want to charge the costumer. Note: Fee you want to charge your costumers (to cover BlockBEE\'s fees fully or partially)';
 $_['text_qrcode'] = 'Select how you want to show the QR Code to the user. Either select a default to show first, or hide one of them.';
 $_['text_btc'] = 'Bitcoin';
 $_['text_refresh_values'] = 'The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). Warning: Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes.';
@@ -43,7 +43,7 @@ $_['entry_btc_address'] = $_['text_btc'] . ' Address';
 $_['entry_order_status'] = 'Order status';
 $_['entry_status'] = 'Status';
 
-$_['branding'] = 'Show CryptAPI logo and credits below the QR code';
+$_['branding'] = 'Show BlockBEE logo and credits below the QR code';
 
 $_['qrcode_default'] = 'Show QR Code';
 $_['qrcode'] = 'QR Code to show';
@@ -77,7 +77,7 @@ $_['entry_geo_zone'] = 'Geo Zone';
 $_['entry_sort_order'] = 'Sort order';
 
 // Error
-$_['error_permission'] = 'Warning: You do not have permission to modify the CryptAPI payment module';
+$_['error_permission'] = 'Warning: You do not have permission to modify the BlockBEE payment module';
 
 // Help hints
 $_['help_cryptocurrencies'] = 'If you are using BlockBee you can choose if setting the receiving addresses here bellow or in your BlockBee settings page.<br/>In order to set the addresses on plugin settings, you need to select “Address Override” while creating the API key.<br/>In order to set the addresses on BlockBee settings, you need to NOT select “Address Override” while creating the API key.';
