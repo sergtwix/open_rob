@@ -38,14 +38,14 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             // var_dump($_POST);
             //var_dump($this->request->post);
             //return;
-            $this->model_setting_setting->editSetting('payment_cryptapi', $this->request->post);
+            $this->model_setting_setting->editSetting('payment_blockbee', $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
             $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
         }
 
-        //var_dump($data['payment_cryptapi']);
+        //var_dump($data['payment_blockbee']);
         $this->load->model('localisation/geo_zone');
 
         $data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
@@ -128,10 +128,10 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         //     }
         // }
 
-        if (isset($this->request->post['payment_cryptapi_disable_conversion'])) {
-            $data['payment_cryptapi_disable_conversion'] = $this->request->post['payment_cryptapi_disable_conversion'];
+        if (isset($this->request->post['payment_blockbee_disable_conversion'])) {
+            $data['payment_blockbee_disable_conversion'] = $this->request->post['payment_blockbee_disable_conversion'];
         } else {
-            $data['payment_cryptapi_disable_conversion'] = $this->config->get('payment_cryptapi_disable_conversion');
+            $data['payment_blockbee_disable_conversion'] = $this->config->get('payment_blockbee_disable_conversion');
         }
 
         if (isset($this->request->post['payment_blockbee_title'])) {

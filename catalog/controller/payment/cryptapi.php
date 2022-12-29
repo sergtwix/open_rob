@@ -128,7 +128,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             if (!empty($apiKey)) {
                 $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
 
-                $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
+                $disable_conversion = $this->config->get('payment_blockbee_disable_conversion');
                 $qr_code_size = $this->config->get('payment_blockbee_qrcode_size');
                 //var_dump( $selected);              
                 $info = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_info($selected, false, $apiKey);
@@ -484,7 +484,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     if ($remaining === $remaining_pending) {
                         $cryptapi_coin = $metaData['cryptapi_currency'];
 
-                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_cryptapi_disable_conversion'), $this->config->get('payment_blockbee_api_key'));
+                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_blockbee_disable_conversion'), $this->config->get('payment_blockbee_api_key'));
 
                         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order_id, 'cryptapi_total', $crypto_total);
 
@@ -535,7 +535,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             die("*ok*");
         }
 
-        $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
+        $disable_conversion = $this->config->get('payment_blockbee_disable_conversion');
 
         $qrcode_size = $this->config->get('payment_blockbee_qrcode_size');
 
