@@ -1,6 +1,6 @@
 <?php
 namespace Opencart\Extension\CryptAPI\System\Library;
-class CryptAPIHelper
+class BlockBEEHelper
 {
   
     private static $base_url = "https://api.blockbee.io";
@@ -46,7 +46,7 @@ class CryptAPIHelper
                   'convert' => 1,
               ];
 
-        $response = CryptAPIHelper::_request($this->coin, 'create', $bb_params);
+        $response = BlockBEEHelper::_request($this->coin, 'create', $bb_params);
 
         if ($response->status == 'success') {
             $this->payment_address = $response->address_in;
@@ -75,7 +75,7 @@ class CryptAPIHelper
             'convert' => 1,
         ];
 
-        $response = CryptAPIHelper::_request($tiker, 'create', $bb_params);
+        $response = BlockBEEHelper::_request($tiker, 'create', $bb_params);
 
         if ($response->status == 'success') {
            return $response->address_out;
@@ -94,7 +94,7 @@ class CryptAPIHelper
             'apikey' => $this->api_key
         ];
 
-        $response = CryptAPIHelper::_request($this->coin, 'logs', $params);
+        $response = BlockBEEHelper::_request($this->coin, 'logs', $params);
 
         if ($response->status == 'success') {
             return $response;
@@ -122,7 +122,7 @@ class CryptAPIHelper
             ];
         }
 
-        $response = CryptAPIHelper::_request($this->coin, 'qrcode', $params);
+        $response = BlockBEEHelper::_request($this->coin, 'qrcode', $params);
 
         if ($response->status == 'success') {
             return ['qr_code' => $response->qr_code, 'uri' => $response->payment_uri];
@@ -152,7 +152,7 @@ class CryptAPIHelper
             ];
         }
 
-        $response = CryptAPIHelper::_request($coin, 'qrcode', $params);
+        $response = BlockBEEHelper::_request($coin, 'qrcode', $params);
 
         if ($response->status == 'success') {
             return ['qr_code' => $response->qr_code, 'uri' => $response->payment_uri];
@@ -163,7 +163,7 @@ class CryptAPIHelper
 
     public static function get_supported_coins()
     {
-        $info = CryptAPIHelper::get_info(null, true, null);
+        $info = BlockBEEHelper::get_info(null, true, null);
 
         if (empty($info)) {
             return null;
@@ -208,7 +208,7 @@ class CryptAPIHelper
             $params['prices'] = '0';
         }
 
-        $response = CryptAPIHelper::_request($coin, 'info', $params, $assoc);
+        $response = BlockBEEHelper::_request($coin, 'info', $params, $assoc);
 
         if (empty($coin) || $response->status == 'success') {
             return $response;
@@ -261,7 +261,7 @@ class CryptAPIHelper
             'apikey' => $apikey
         ];
 
-        $response = CryptAPIHelper::_request('', 'convert', $params);
+        $response = BlockBEEHelper::_request('', 'convert', $params);
 
         if ($response->status == 'success') {
             return $response->value_coin;
@@ -279,7 +279,7 @@ class CryptAPIHelper
             'apikey' => $api_key,
         ];
 
-        $response = CryptAPIHelper::_request($coin, 'estimate', $params);
+        $response = BlockBEEHelper::_request($coin, 'estimate', $params);
 
         if ($response->status == 'success') {
 
@@ -326,14 +326,14 @@ class CryptAPIHelper
         if (!empty($history)) {
             foreach ($history as $uuid => $item) {
                 if ((int)$item['pending'] === 0) {
-                    $remaining = bcsub(CryptAPIHelper::sig_fig($remaining, 6), $item['value_paid'], 8);
+                    $remaining = bcsub(BlockBEEHelper::sig_fig($remaining, 6), $item['value_paid'], 8);
                 }
 
-                $remaining_pending = bcsub(CryptAPIHelper::sig_fig($remaining_pending, 6), $item['value_paid'], 8);
-                $remaining_fiat = bcsub(CryptAPIHelper::sig_fig($remaining_fiat, 6), $item['value_paid_fiat'], 8);
+                $remaining_pending = bcsub(BlockBEEHelper::sig_fig($remaining_pending, 6), $item['value_paid'], 8);
+                $remaining_fiat = bcsub(BlockBEEHelper::sig_fig($remaining_fiat, 6), $item['value_paid_fiat'], 8);
 
-                $already_paid = bcadd(CryptAPIHelper::sig_fig($already_paid, 6), $item['value_paid'], 8);
-                $already_paid_fiat = bcadd(CryptAPIHelper::sig_fig($already_paid_fiat, 6), $item['value_paid_fiat'], 8);
+                $already_paid = bcadd(BlockBEEHelper::sig_fig($already_paid, 6), $item['value_paid'], 8);
+                $already_paid_fiat = bcadd(BlockBEEHelper::sig_fig($already_paid_fiat, 6), $item['value_paid_fiat'], 8);
             }
         }
 
@@ -349,14 +349,14 @@ class CryptAPIHelper
     private static function _request($coin, $endpoint, $params = [], $assoc = false)
     {
 
-        $base_url = CryptAPIHelper::$base_url;
+        $base_url = BlockBEEHelper::$base_url;
 
         // if (!empty($params['apikey']) && $endpoint !== 'info') {
-        //     $base_url = CryptAPIHelper::$pro_url;
+        //     $base_url = BlockBEEHelper::$pro_url;
         // }
 
       //   if($endpoint === 'info' || $endpoint === 'convert' || $endpoint === 'logs') {
-      //     $base_url = CryptAPIHelper::$cryptapi_url;
+      //     $base_url = BlockBEEHelper::$cryptapi_url;
       // }   
 
         if (!empty($params)) {

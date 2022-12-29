@@ -34,7 +34,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
           $da_cry = array();
 
           foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
-            if (!empty($addressOut = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_address_out($selected, $apiKey, $callbackUrl))){
+            if (!empty($addressOut = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_address_out($selected, $apiKey, $callbackUrl))){
               $da_cry += [
                 $selected=>$selected,
               ];
@@ -77,7 +77,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 }
 
                 if ($blockchain_fee) {
-                    $cryptapiFee += floatval(\Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_estimate($this->session->data['cryptapi_selected'])->$currency);
+                    $cryptapiFee += floatval(\Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_estimate($this->session->data['cryptapi_selected'])->$currency);
                 }
             }
 
@@ -131,11 +131,11 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
                 $qr_code_size = $this->config->get('payment_cryptapi_qrcode_size');
                 //var_dump( $selected);              
-                $info = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_info($selected, false, $apiKey);
+                $info = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_info($selected, false, $apiKey);
                 //var_dump( $info); 
                 $minTx = floatval($info->minimum_transaction_coin);
 
-                $cryptoTotal = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($order_info['currency_code'], $selected, $total, $disable_conversion,$apiKey);
+                $cryptoTotal = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_conversion($order_info['currency_code'], $selected, $total, $disable_conversion,$apiKey);
 
                 if ($cryptoTotal < $minTx) {
                     $message = $this->module->l('Payment error: ', 'validation');
@@ -146,7 +146,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     $callbackUrl = $this->url->link('extension/cryptapi/payment/cryptapi|callback', 'order_id=' . $this->session->data['order_id'] . '&nonce=' . $nonce, true);
                     $callbackUrl = str_replace('&amp;', '&', $callbackUrl);
 
-                    $helper = new \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper($selected, $apiKey, $callbackUrl, [], true);
+                    $helper = new \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper($selected, $apiKey, $callbackUrl, [], true);
                     $addressIn = $helper->get_address();
 
                     $qrCodeDataValue = $helper->get_qrcode($cryptoTotal, $qr_code_size);
@@ -262,7 +262,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $cancel_timer = (int)$metaData['cryptapi_order_timestamp'] + (int)$this->config->get('payment_cryptapi_order_cancelation_timeout') - time();
 
         $params = [
-            'module_path' => \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::base_url() . '/extension/cryptapi/catalog/view/image/',
+            'module_path' => \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::base_url() . '/extension/cryptapi/catalog/view/image/',
             'header' => $this->load->controller('common/header'),
             'footer' => $this->load->controller('common/footer'),
             'currency_symbol_left' => $currencySymbolLeft,
@@ -276,7 +276,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             'qr_code' => $metaData['cryptapi_qrcode'],
             'qr_code_value' => $metaData['cryptapi_qrcode_value'],
             'show_branding' => $this->config->get('payment_cryptapi_branding'),
-            'branding_logo' => \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::base_url() . '/extension/cryptapi/catalog/view/image/payment.png',
+            'branding_logo' => \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::base_url() . '/extension/cryptapi/catalog/view/image/payment.png',
             'qr_code_setting' => $this->config->get('payment_cryptapi_qrcode'),
             'order_timestamp' => $order['total'],
             'order_cancelation_timeout' => $this->config->get('payment_cryptapi_order_cancelation_timeout'),
@@ -384,7 +384,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $history = json_decode($metaData['cryptapi_history'], true);
 
-        $calc = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::calc_order($history, $metaData['cryptapi_total'], $metaData['cryptapi_total_fiat']);
+        $calc = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::calc_order($history, $metaData['cryptapi_total'], $metaData['cryptapi_total_fiat']);
 
         $already_paid = $calc['already_paid'];
         $already_paid_fiat = $calc['already_paid_fiat'] <= 0 ? 0 : $calc['already_paid_fiat'];
@@ -474,7 +474,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
                 $min_tx = floatval($metaData['cryptapi_min']);
 
-                $calc = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::calc_order($history, $metaData['cryptapi_total'], floatval($metaData['cryptapi_total_fiat']));
+                $calc = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::calc_order($history, $metaData['cryptapi_total'], floatval($metaData['cryptapi_total_fiat']));
 
                 $remaining = $calc['remaining'];
                 $remaining_pending = $calc['remaining_pending'];
@@ -484,18 +484,18 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     if ($remaining === $remaining_pending) {
                         $cryptapi_coin = $metaData['cryptapi_currency'];
 
-                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_cryptapi_disable_conversion'), $this->config->get('payment_cryptapi_api_key'));
+                        $crypto_total = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_conversion($currency, $cryptapi_coin, $metaData['cryptapi_total_fiat'], $this->config->get('payment_cryptapi_disable_conversion'), $this->config->get('payment_cryptapi_api_key'));
 
                         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order_id, 'cryptapi_total', $crypto_total);
 
-                        $calc_cron = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::calc_order($history, $crypto_total, $metaData['cryptapi_total_fiat']);
+                        $calc_cron = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::calc_order($history, $crypto_total, $metaData['cryptapi_total_fiat']);
 
                         $crypto_remaining_total = $calc_cron['remaining_pending'];
 
                         if ($remaining_pending <= $min_tx && $remaining_pending > 0) {
-                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $min_tx, $apiKey, $qrcode_size);
+                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $min_tx, $apiKey, $qrcode_size);
                         } else {
-                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $crypto_remaining_total, $apiKey, $qrcode_size);
+                            $qr_code_data_value = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_static_qrcode($metaData['cryptapi_address'], $cryptapi_coin, $crypto_remaining_total, $apiKey, $qrcode_size);
                         }
 
                         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order_id, 'cryptapi_qrcode_value', $qr_code_data_value['qr_code']);
@@ -521,7 +521,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $this->load->model('extension/cryptapi/payment/cryptapi');
 
-        $data = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::process_callback($_GET);
+        $data = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::process_callback($_GET);
 
         $this->load->model('checkout/order');
 
@@ -546,11 +546,11 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $history = json_decode($metaData['cryptapi_history'], true);
 
         if (empty($history[$data['uuid']])) {
-            $fiat_conversion = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_conversion($metaData['cryptapi_currency'], $order['currency_code'], $paid, $disable_conversion,$apiKey);
+            $fiat_conversion = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_conversion($metaData['cryptapi_currency'], $order['currency_code'], $paid, $disable_conversion,$apiKey);
 
             $history[$data['uuid']] = [
                 'timestamp' => time(),
-                'value_paid' => \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::sig_fig($paid, 6),
+                'value_paid' => \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::sig_fig($paid, 6),
                 'value_paid_fiat' => $fiat_conversion,
                 'pending' => $data['pending']
             ];
@@ -564,7 +564,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $history = json_decode($metaData['cryptapi_history'], true);// <<-something's wrong
 
-        $calc = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::calc_order($history, $metaData['cryptapi_total'], $metaData['cryptapi_total_fiat']);
+        $calc = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::calc_order($history, $metaData['cryptapi_total'], $metaData['cryptapi_total_fiat']);
 
         $remaining = $calc['remaining'];
         $remaining_pending = $calc['remaining_pending'];
@@ -579,9 +579,9 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         }
 
         if ($remaining_pending <= $min_tx) {
-            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $min_tx, $apiKey, $qrcode_size)['qr_code'];
+            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $min_tx, $apiKey, $qrcode_size)['qr_code'];
         } else {
-            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $remaining_pending, $apiKey, $qrcode_size)['qr_code'];
+            $qrcode_conv = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_static_qrcode($metaData['cryptapi_address'], $metaData['cryptapi_currency'], $remaining_pending, $apiKey, $qrcode_size)['qr_code'];
         }
 
         $this->model_extension_cryptapi_payment_cryptapi->updatePaymentData($order['order_id'], 'cryptapi_qrcode_value', $qrcode_conv);

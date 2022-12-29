@@ -106,7 +106,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
          * Defining Cryptocurrencies
          */
 
-        $supported_coins = \Opencart\Extension\CryptAPI\System\Library\CryptAPIHelper::get_supported_coins();
+        $supported_coins = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_supported_coins();
 
         $data['payment_cryptapi_cryptocurrencies_array'] = $supported_coins;
 
