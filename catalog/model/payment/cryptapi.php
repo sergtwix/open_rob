@@ -6,9 +6,9 @@ class CryptAPI extends \Opencart\System\Engine\Model
     {
         $this->load->language('extension/cryptapi/payment/cryptapi');
 
-        if ($this->config->get('payment_cryptapi_status')) {
+        if ($this->config->get('payment_blockbee_status')) {
             $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_eway_standard_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
-            if (!$this->config->get('payment_cryptapi_standard_geo_zone_id')) {
+            if (!$this->config->get('payment_blockbee_standard_geo_zone_id')) {
                 $status = true;
             } elseif ($query->num_rows) {
                 $status = true;
@@ -28,9 +28,9 @@ class CryptAPI extends \Opencart\System\Engine\Model
         if ($status) {
             $method_data = array(
                 'code' => 'cryptapi',
-                'title' => $this->config->get('payment_cryptapi_title'),
+                'title' => $this->config->get('payment_blockbee_title'),
                 'terms' => 'cryptocurrency',
-                'sort_order' => $this->config->get('payment_cryptapi_sort_order')
+                'sort_order' => $this->config->get('payment_blockbee_sort_order')
             );
         }
 
@@ -43,8 +43,8 @@ class CryptAPI extends \Opencart\System\Engine\Model
 
         $cryptocurrencies = array();
 
-        foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
-            foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
+        foreach ($this->config->get('payment_blockbee_cryptocurrencies') as $selected) {
+            foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_blockbee_cryptocurrencies_array_cache')), true) as $token => $coin) {
                 if ($selected === $token) {
                     $cryptocurrencies += [
                         $token => $coin,
@@ -56,7 +56,7 @@ class CryptAPI extends \Opencart\System\Engine\Model
         if (count($cryptocurrencies) > 0) {
             foreach ($cryptocurrencies as $token => $coin) {
                 if ($coin) {
-                    if(!empty($this->config->get('payment_cryptapi_cryptocurrencies_address_' . $token) || !empty($this->config->get('payment_blockbee_api_key')))) {
+                    if(!empty($this->config->get('payment_blockbee_cryptocurrencies_address_' . $token) || !empty($this->config->get('payment_blockbee_api_key')))) {
                         $status = true;
                         break;
                     }

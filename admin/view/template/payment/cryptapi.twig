@@ -35,8 +35,8 @@
                                 <label class="col-sm-2 col-form-label" for="input-status">{{ entry_status }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_status" id="input-status" class="form-select">
-                                            {% if payment_cryptapi_status %}
+                                        <select name="payment_blockbee_status" id="input-status" class="form-select">
+                                            {% if payment_blockbee_status %}
                                                 <option value="1" selected="selected">{{ text_enabled }}</option>
                                                 <option value="0">{{ text_disabled }}</option>
                                             {% else %}
@@ -51,8 +51,8 @@
                                 <label class="col-sm-2 col-form-label" for="cryptapi_cryptapi_title">{{ title }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <input class="form-control" type="text" id="cryptapi_cryptapi_title" name='payment_cryptapi_title'
-                                               {% if payment_cryptapi_title is empty %}value="Cryptocurrency" {% else %}value="{{ payment_cryptapi_title }}"{% endif %}>
+                                        <input class="form-control" type="text" id="cryptapi_cryptapi_title" name='payment_blockbee_title'
+                                               {% if payment_blockbee_title is empty %}value="Cryptocurrency" {% else %}value="{{ payment_blockbee_title }}"{% endif %}>
                                     </div>
                                 </div>
                             </div>
@@ -60,14 +60,14 @@
                                 <label class="col-sm-2 col-form-label" for="cryptapi_branding">{{ branding }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_branding" id="cryptapi_branding" class="form-select">
-                                            {% if payment_cryptapi_branding is empty %}
+                                        <select name="payment_blockbee_branding" id="cryptapi_branding" class="form-select">
+                                            {% if payment_blockbee_branding is empty %}
                                                 <option value="1" selected="selected">{{ text_enabled }}</option>
                                                 <option value="0">{{ text_disabled }}</option>
-                                            {% elseif payment_cryptapi_branding == 1 %}
+                                            {% elseif payment_blockbee_branding == 1 %}
                                                 <option value="1" selected="selected">{{ text_enabled }}</option>
                                                 <option value="0">{{ text_disabled }}</option>
-                                            {% elseif payment_cryptapi_branding == 0 %}
+                                            {% elseif payment_blockbee_branding == 0 %}
                                                 <option value="1">{{ text_enabled }}</option>
                                                 <option value="0" selected="selected">{{ text_disabled }}</option>
                                             {% endif %}
@@ -81,8 +81,8 @@
                                     {{ info_icon }}
                                 </label>
                                 <div class="col-sm-10">
-                                    <select name="payment_cryptapi_blockchain_fees" id="cryptapi_blockchain_fees" class="form-select">
-                                        {% if payment_cryptapi_blockchain_fees == 1 %}
+                                    <select name="payment_blockbee_blockchain_fees" id="cryptapi_blockchain_fees" class="form-select">
+                                        {% if payment_blockbee_blockchain_fees == 1 %}
                                             <option value="1" selected="selected">{{ text_enabled }}</option>
                                             <option value="0">{{ text_disabled }}</option>
                                         {% else %}
@@ -93,189 +93,189 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="payment_cryptapi_fees" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ text_fees }}">
+                                <label class="col-sm-2 col-form-label" for="payment_blockbee_fees" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ text_fees }}">
                                     {{ fees }}
                                     {{ info_icon }}
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_fees" id="payment_cryptapi_fees" class="form-select">
+                                        <select name="payment_blockbee_fees" id="payment_blockbee_fees" class="form-select">
                                             <option value="0.05"
-                                                    {% if payment_cryptapi_fees == "0.05" %}
+                                                    {% if payment_blockbee_fees == "0.05" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >5%
                                             </option>
                                             <option value="0.048"
-                                                    {% if payment_cryptapi_fees == "0.048" %}
+                                                    {% if payment_blockbee_fees == "0.048" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >4.8%
                                             </option>
                                             <option value="0.045"
-                                                    {% if payment_cryptapi_fees == "0.045" %}
+                                                    {% if payment_blockbee_fees == "0.045" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >4.5%
                                             </option>
                                             <option value="0.042"
-                                                    {% if payment_cryptapi_fees == "0.042" %}
+                                                    {% if payment_blockbee_fees == "0.042" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >4.2%
                                             </option>
                                             <option value="0.04"
-                                                    {% if payment_cryptapi_fees == "0.04" %}
+                                                    {% if payment_blockbee_fees == "0.04" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >4%
                                             </option>
                                             <option value="0.038"
-                                                    {% if payment_cryptapi_fees == "0.038" %}
+                                                    {% if payment_blockbee_fees == "0.038" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >3.8%
                                             </option>
                                             <option value="0.035"
-                                                    {% if payment_cryptapi_fees == "0.035" %}
+                                                    {% if payment_blockbee_fees == "0.035" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >3.5%
                                             </option>
                                             <option value="0.032"
-                                                    {% if payment_cryptapi_fees == "0.032" %}
+                                                    {% if payment_blockbee_fees == "0.032" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >3.2%
                                             </option>
                                             <option value="0.03"
-                                                    {% if payment_cryptapi_fees == "0.03" %}
+                                                    {% if payment_blockbee_fees == "0.03" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >3%
                                             </option>
                                             <option value="0.028"
-                                                    {% if payment_cryptapi_fees == "0.028" %}
+                                                    {% if payment_blockbee_fees == "0.028" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >2.8%
                                             </option>
                                             <option value="0.025"
-                                                    {% if payment_cryptapi_fees == "0.025" %}
+                                                    {% if payment_blockbee_fees == "0.025" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >2.5%
                                             </option>
                                             <option value="0.022"
-                                                    {% if payment_cryptapi_fees == "0.022" %}
+                                                    {% if payment_blockbee_fees == "0.022" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >2.2%
                                             </option>
                                             <option value="0.02"
-                                                    {% if payment_cryptapi_fees == "0.02" %}
+                                                    {% if payment_blockbee_fees == "0.02" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >2%
                                             </option>
                                             <option value="0.018"
-                                                    {% if payment_cryptapi_fees == "0.018" %}
+                                                    {% if payment_blockbee_fees == "0.018" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >1.8%
                                             </option>
                                             <option value="0.015"
-                                                    {% if payment_cryptapi_fees == "0.015" %}
+                                                    {% if payment_blockbee_fees == "0.015" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >1.5%
                                             </option>
                                             <option value="0.012"
-                                                    {% if payment_cryptapi_fees == "0.012" %}
+                                                    {% if payment_blockbee_fees == "0.012" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >1.2%
                                             </option>
                                             <option value="0.01"
-                                                    {% if payment_cryptapi_fees == "0.01" or payment_cryptapi_fees is empty %}
+                                                    {% if payment_blockbee_fees == "0.01" or payment_blockbee_fees is empty %}
                                                         selected="selected"
                                                     {% endif %}
                                             >1%
                                             </option>
                                             <option value="0.0090"
-                                                    {% if payment_cryptapi_fees == "0.0090" %}
+                                                    {% if payment_blockbee_fees == "0.0090" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.90%
                                             </option>
                                             <option value="0.0085"
-                                                    {% if payment_cryptapi_fees == "0.0085" %}
+                                                    {% if payment_blockbee_fees == "0.0085" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.85%
                                             </option>
                                             <option value="0.0080"
-                                                    {% if payment_cryptapi_fees == "0.0080" %}
+                                                    {% if payment_blockbee_fees == "0.0080" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.80%
                                             </option>
                                             <option value="0.0075"
-                                                    {% if payment_cryptapi_fees == "0.0075" %}
+                                                    {% if payment_blockbee_fees == "0.0075" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.75%
                                             </option>
                                             <option value="0.0070"
-                                                    {% if payment_cryptapi_fees == "0.0070" %}
+                                                    {% if payment_blockbee_fees == "0.0070" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.70%
                                             </option>
                                             <option value="0.0065"
-                                                    {% if payment_cryptapi_fees == "0.0065" %}
+                                                    {% if payment_blockbee_fees == "0.0065" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.65%
                                             </option>
                                             <option value="0.0060"
-                                                    {% if payment_cryptapi_fees == "0.0060" %}
+                                                    {% if payment_blockbee_fees == "0.0060" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.60%
                                             </option>
                                             <option value="0.0055"
-                                                    {% if payment_cryptapi_fees == "0.0055" %}
+                                                    {% if payment_blockbee_fees == "0.0055" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.55%
                                             </option>
                                             <option value="0.0050"
-                                                    {% if payment_cryptapi_fees == "0.0050" %}
+                                                    {% if payment_blockbee_fees == "0.0050" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.50%
                                             </option>
                                             <option value="0.0040"
-                                                    {% if payment_cryptapi_fees == "0.0040" %}
+                                                    {% if payment_blockbee_fees == "0.0040" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.40%
                                             </option>
                                             <option value="0.0030"
-                                                    {% if payment_cryptapi_fees == "0.0030" %}
+                                                    {% if payment_blockbee_fees == "0.0030" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.30%
                                             </option>
                                             <option value="0.0025"
-                                                    {% if payment_cryptapi_fees == "0.0025" %}
+                                                    {% if payment_blockbee_fees == "0.0025" %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0.25%
                                             </option>
                                             <option value="0"
-                                                    {% if payment_cryptapi_fees is empty or payment_cryptapi_fees == '0' %}
+                                                    {% if payment_blockbee_fees is empty or payment_blockbee_fees == '0' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >0%
@@ -288,8 +288,8 @@
                                 <label class="col-sm-2 col-form-label" for="cryptapi_qrcode_size">{{ qrcode_size }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <input class="form-control" type="text" id="cryptapi_qrcode_size" name='payment_cryptapi_qrcode_size'
-                                               {% if payment_cryptapi_qrcode_size is empty %}value="300" {% else %}value="{{ payment_cryptapi_qrcode_size }}"{% endif %}>
+                                        <input class="form-control" type="text" id="cryptapi_qrcode_size" name='payment_blockbee_qrcode_size'
+                                               {% if payment_blockbee_qrcode_size is empty %}value="300" {% else %}value="{{ payment_blockbee_qrcode_size }}"{% endif %}>
                                     </div>
 
                                 </div>
@@ -300,14 +300,14 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_qrcode_default" id="cryptapi_qrcode_default" class="form-select">
-                                            {% if payment_cryptapi_qrcode_default is empty or payment_cryptapi_qrcode_default != '0' %}
+                                        <select name="payment_blockbee_qrcode_default" id="cryptapi_qrcode_default" class="form-select">
+                                            {% if payment_blockbee_qrcode_default is empty or payment_blockbee_qrcode_default != '0' %}
                                                 <option value="1" selected="selected">{{ text_enabled }}</option>
                                                 <option value="0">{{ text_disabled }}</option>
-                                            {% elseif payment_cryptapi_branding == 1 %}
+                                            {% elseif payment_blockbee_branding == 1 %}
                                                 <option value="1" selected="selected">{{ text_enabled }}</option>
                                                 <option value="0">{{ text_disabled }}</option>
-                                            {% elseif payment_cryptapi_branding == 0 %}
+                                            {% elseif payment_blockbee_branding == 0 %}
                                                 <option value="1">{{ text_enabled }}</option>
                                                 <option value="0" selected="selected">{{ text_disabled }}</option>
                                             {% endif %}
@@ -322,24 +322,24 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_qrcode" id="cryptapi_qrcode" class="form-select">
+                                        <select name="payment_blockbee_qrcode" id="cryptapi_qrcode" class="form-select">
                                             <option value="without_ammount"
-                                                    {% if payment_cryptapi_qrcode is empty or payment_cryptapi_qrcode == 'without_ammount' %}
+                                                    {% if payment_blockbee_qrcode is empty or payment_blockbee_qrcode == 'without_ammount' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ qrcode_without_ammount }}</option>
                                             <option value="ammount"
-                                                    {% if payment_cryptapi_qrcode == 'ammount' %}
+                                                    {% if payment_blockbee_qrcode == 'ammount' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ qrcode_ammount }}</option>
                                             <option value="hide_ammount"
-                                                    {% if payment_cryptapi_qrcode == 'hide_ammount' %}
+                                                    {% if payment_blockbee_qrcode == 'hide_ammount' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ qrcode_hide_ammount }}</option>
                                             <option value="hide_without_ammount"
-                                                    {% if payment_cryptapi_qrcode == 'hide_without_ammount' %}
+                                                    {% if payment_blockbee_qrcode == 'hide_without_ammount' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ qrcode_hide_without_ammount }}</option>
@@ -353,19 +353,19 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_color_scheme" id="cryptapi_color_scheme" class="form-select">
+                                        <select name="payment_blockbee_color_scheme" id="cryptapi_color_scheme" class="form-select">
                                             <option value="light"
-                                                    {% if payment_cryptapi_color_scheme is empty or payment_cryptapi_color_scheme == 'light' %}
+                                                    {% if payment_blockbee_color_scheme is empty or payment_blockbee_color_scheme == 'light' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ scheme_light }}</option>
                                             <option value="dark"
-                                                    {% if payment_cryptapi_color_scheme == 'dark' %}
+                                                    {% if payment_blockbee_color_scheme == 'dark' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ scheme_dark }}</option>
                                             <option value="auto"
-                                                    {% if payment_cryptapi_color_scheme == 'auto' %}
+                                                    {% if payment_blockbee_color_scheme == 'auto' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ scheme_auto }}</option>
@@ -380,45 +380,45 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_refresh_values" id="cryptapi_refresh_values" class="form-select">
+                                        <select name="payment_blockbee_refresh_values" id="cryptapi_refresh_values" class="form-select">
                                             <option value="0"
-                                                    {% if payment_cryptapi_refresh_values == '0' %}
+                                                    {% if payment_blockbee_refresh_values == '0' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ never }}
                                             </option>
                                             <option value="300"
-                                                    {% if payment_cryptapi_refresh_values is empty or payment_cryptapi_refresh_values == '300' %}
+                                                    {% if payment_blockbee_refresh_values is empty or payment_blockbee_refresh_values == '300' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ five_minutes }}
                                             </option>
                                             <option value="600"
-                                                    {% if payment_cryptapi_refresh_values == '600' %}
+                                                    {% if payment_blockbee_refresh_values == '600' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ ten_minutes }}
                                             </option>
                                             <option value="900"
-                                                    {% if payment_cryptapi_refresh_values == '900' %}
+                                                    {% if payment_blockbee_refresh_values == '900' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ fifteen_minutes }}
                                             </option>
                                             <option value="1800"
-                                                    {% if payment_cryptapi_refresh_values == '1800' %}
+                                                    {% if payment_blockbee_refresh_values == '1800' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ thirty_minutes }}
                                             </option>
                                             <option value="2700"
-                                                    {% if payment_cryptapi_refresh_values == '2700' %}
+                                                    {% if payment_blockbee_refresh_values == '2700' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ forty_five_minutes }}
                                             </option>
                                             <option value="3600"
-                                                    {% if payment_cryptapi_refresh_values == '3600' %}
+                                                    {% if payment_blockbee_refresh_values == '3600' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ sixty_minutes }}
@@ -434,39 +434,39 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_order_cancelation_timeout" id="cryptapi_order_cancelation_timeout" class="form-select">
+                                        <select name="payment_blockbee_order_cancelation_timeout" id="cryptapi_order_cancelation_timeout" class="form-select">
                                             <option value="0"
-                                                    {% if payment_cryptapi_order_cancelation_timeout == '0' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout == '0' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ never }}
                                             </option>
                                             <option value="3600"
-                                                    {% if payment_cryptapi_order_cancelation_timeout is empty or payment_cryptapi_order_cancelation_timeout == '3600' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout is empty or payment_blockbee_order_cancelation_timeout == '3600' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ one_hour }}
                                             </option>
                                             <option value="21600"
-                                                    {% if payment_cryptapi_order_cancelation_timeout == '21600' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout == '21600' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ six_hours }}
                                             </option>
                                             <option value="43200"
-                                                    {% if payment_cryptapi_order_cancelation_timeout == '21600' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout == '21600' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ twelve_hours }}
                                             </option>
                                             <option value="64800"
-                                                    {% if payment_cryptapi_order_cancelation_timeout == '64800' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout == '64800' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ eighteen_hours }}
                                             </option>
                                             <option value="86400"
-                                                    {% if payment_cryptapi_order_cancelation_timeout == '86400' %}
+                                                    {% if payment_blockbee_order_cancelation_timeout == '86400' %}
                                                         selected="selected"
                                                     {% endif %}
                                             >{{ twenty_four_hours }}
@@ -479,10 +479,10 @@
                                 <label class="col-sm-2 col-form-label" for="input-geo-zone">{{ entry_geo_zone }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_standard_geo_zone_id" id="input-geo-zone" class="form-select">
+                                        <select name="payment_blockbee_standard_geo_zone_id" id="input-geo-zone" class="form-select">
                                             <option value="0">{{ text_all_zones }}</option>
                                             {% for geo_zone in geo_zones %}
-                                                {% if geo_zone.geo_zone_id == payment_cryptapi_standard_geo_zone_id %}
+                                                {% if geo_zone.geo_zone_id == payment_blockbee_standard_geo_zone_id %}
                                                     <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
                                                 {% else %}
                                                     <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
@@ -497,9 +497,9 @@
                                 <label class="col-sm-2 col-form-label" for="input-order-status">{{ entry_order_status }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <select name="payment_cryptapi_order_status_id" id="input-order-status" class="form-select">
+                                        <select name="payment_blockbee_order_status_id" id="input-order-status" class="form-select">
                                             {% for order_status in order_statuses %}
-                                                {% if order_status.order_status_id == payment_cryptapi_order_status_id %}
+                                                {% if order_status.order_status_id == payment_blockbee_order_status_id %}
                                                     <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
                                                 {% else %}
                                                     <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
@@ -513,7 +513,7 @@
                                 <label class="col-sm-2 col-form-label" for="input-sort-order">{{ entry_sort_order }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <input type="text" name="payment_cryptapi_sort_order" value="{{ payment_cryptapi_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order"
+                                        <input type="text" name="payment_blockbee_sort_order" value="{{ payment_blockbee_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order"
                                                class="form-control"/>
                                     </div>
                                 </div>
@@ -537,13 +537,13 @@
                                     </label>                                    
                                 </div>
                                 <div class="col-sm-4 center">                               
-                                    <input type="hidden" id="cryptapi_cryptocurrencies_array_cache" name="payment_cryptapi_cryptocurrencies_array_cache"
-                                    value='{{ payment_cryptapi_cryptocurrencies_array|json_encode() }}'>
+                                    <input type="hidden" id="cryptapi_cryptocurrencies_array_cache" name="payment_blockbee_cryptocurrencies_array_cache"
+                                    value='{{ payment_blockbee_cryptocurrencies_array|json_encode() }}'>
                                     
-                                        <select name="payment_cryptapi_cryptocurrencies[]" multiple="multiple" size="10" id="payment_cry" class="form-select">
-                                                {% for ticker, coin in payment_cryptapi_cryptocurrencies_array %}
+                                        <select name="payment_blockbee_cryptocurrencies[]" multiple="multiple" size="10" id="payment_cry" class="form-select">
+                                                {% for ticker, coin in payment_blockbee_cryptocurrencies_array %}
                                                 <option value='{{ ticker }}'
-                                                    {{ payment_cryptapi_cryptocurrencies[ticker]  is defined and payment_cryptapi_cryptocurrencies[ticker]  == ticker ? 'selected="selected"' : '' }}
+                                                    {{ payment_blockbee_cryptocurrencies[ticker]  is defined and payment_blockbee_cryptocurrencies[ticker]  == ticker ? 'selected="selected"' : '' }}
                                                     >{{ coin['name'] }}
                                                 </option>
                                                 {% endfor %}                                            

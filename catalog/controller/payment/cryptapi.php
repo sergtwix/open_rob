@@ -6,7 +6,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 {
     public function index(): string
     {
-        if ($this->config->get('payment_cryptapi_status')) {
+        if ($this->config->get('payment_blockbee_status')) {
             // Library
             require(DIR_EXTENSION . 'cryptapi/system/library/cryptapi.php');
 
@@ -15,7 +15,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $this->load->model('localisation/country');
             $this->load->model('checkout/order');
 
-            $data['title'] = $this->config->get('payment_cryptapi_title');
+            $data['title'] = $this->config->get('payment_blockbee_title');
 
             $data['cryptocurrencies'] = array();
 
@@ -33,7 +33,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
           $apiKey = $this->config->get('payment_blockbee_api_key');
           $da_cry = array();
 
-          foreach ($this->config->get('payment_cryptapi_cryptocurrencies') as $selected) {
+          foreach ($this->config->get('payment_blockbee_cryptocurrencies') as $selected) {
             if (!empty($addressOut = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_address_out($selected, $apiKey, $callbackUrl))){
               $da_cry += [
                 $selected=>$selected,
@@ -46,7 +46,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
           }
 
           foreach ($da_cry as $selected) {
-                foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_cryptapi_cryptocurrencies_array_cache')), true) as $token => $coin) {
+                foreach (json_decode(str_replace("&quot;", '"', $this->config->get('payment_blockbee_cryptocurrencies_array_cache')), true) as $token => $coin) {
                     if ($selected === $token) {
                         $data['cryptocurrencies'] += [
                             $token => $coin,
@@ -61,8 +61,8 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
 
             // Fee
-            $fee = $this->config->get('payment_cryptapi_fees');
-            $blockchain_fee = $this->config->get('payment_cryptapi_blockchain_fees');
+            $fee = $this->config->get('payment_blockbee_fees');
+            $blockchain_fee = $this->config->get('payment_blockbee_blockchain_fees');
             $currency = $order['currency_code'];
             $currencySymbolLeft = $this->model_localisation_currency->getCurrencies()[$order['currency_code']]['symbol_left'];
             $currencySymbolRight = $this->model_localisation_currency->getCurrencies()[$order['currency_code']]['symbol_right'];
@@ -111,7 +111,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $json = array();
 
-        if ($this->config->get('payment_cryptapi_status')) {
+        if ($this->config->get('payment_blockbee_status')) {
             $this->load->model('checkout/order');
             $this->load->model('extension/cryptapi/payment/cryptapi');
 
@@ -120,7 +120,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $total = $this->currency->format($order_info['total'] + $cryptoFee, $order_info['currency_code'], 1.00000, false);
 
             $selected = $this->request->post['cryptapi_coin'];
-            //$address = $this->config->get('payment_cryptapi_cryptocurrencies_address_' . $selected);
+            //$address = $this->config->get('payment_blockbee_cryptocurrencies_address_' . $selected);
 
             $apiKey = $this->config->get('payment_blockbee_api_key');
 
@@ -129,7 +129,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 $nonce = $this->model_extension_cryptapi_payment_cryptapi->generateNonce();
 
                 $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
-                $qr_code_size = $this->config->get('payment_cryptapi_qrcode_size');
+                $qr_code_size = $this->config->get('payment_blockbee_qrcode_size');
                 //var_dump( $selected);              
                 $info = \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::get_info($selected, false, $apiKey);
                 //var_dump( $info); 
@@ -173,7 +173,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                     $paymentData = json_encode($paymentData);
                     $this->model_extension_cryptapi_payment_cryptapi->addPaymentData($this->session->data['order_id'], $paymentData);
 
-                    $this->model_checkout_order->addHistory($this->session->data['order_id'], $this->config->get('payment_cryptapi_order_status_id'), '', true);
+                    $this->model_checkout_order->addHistory($this->session->data['order_id'], $this->config->get('payment_blockbee_order_status_id'), '', true);
                     $json['redirect'] = $this->url->link('checkout/success', 'order_id=' . $this->session->data['order_id'] . 'nonce=' . $nonce, true);
                 }
             }
@@ -200,7 +200,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
                 $order = false;
             }
 
-            if (!$status && $order && $order['order_status_id'] != $this->config->get('payment_cryptapi_order_status_id')) {
+            if (!$status && $order && $order['order_status_id'] != $this->config->get('payment_blockbee_order_status_id')) {
                 $order = false;
             }
         }
@@ -210,7 +210,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
     public function pay()
     {
         // In case the extension is disabled, do nothing
-        if (!$this->config->get('payment_cryptapi_status')) {
+        if (!$this->config->get('payment_blockbee_status')) {
             $this->response->redirect($this->url->link('common/home', '', true));
         }
 
@@ -258,8 +258,8 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $crypto_allowed_value = true;
         }
 
-        $conversion_timer = ((int)$metaData['cryptapi_last_price_update'] + (int)$this->config->get('payment_cryptapi_refresh_values')) - time();
-        $cancel_timer = (int)$metaData['cryptapi_order_timestamp'] + (int)$this->config->get('payment_cryptapi_order_cancelation_timeout') - time();
+        $conversion_timer = ((int)$metaData['cryptapi_last_price_update'] + (int)$this->config->get('payment_blockbee_refresh_values')) - time();
+        $cancel_timer = (int)$metaData['cryptapi_order_timestamp'] + (int)$this->config->get('payment_blockbee_order_cancelation_timeout') - time();
 
         $params = [
             'module_path' => \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::base_url() . '/extension/cryptapi/catalog/view/image/',
@@ -272,19 +272,19 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             'crypto_coin' => $cryptoCoin,
             'crypto_value' => $metaData['cryptapi_total'],
             'ajax_url' => $ajaxUrl,
-            'qr_code_size' => $this->config->get('payment_cryptapi_qrcode_size'),
+            'qr_code_size' => $this->config->get('payment_blockbee_qrcode_size'),
             'qr_code' => $metaData['cryptapi_qrcode'],
             'qr_code_value' => $metaData['cryptapi_qrcode_value'],
-            'show_branding' => $this->config->get('payment_cryptapi_branding'),
+            'show_branding' => $this->config->get('payment_blockbee_branding'),
             'branding_logo' => \Opencart\Extension\CryptAPI\System\Library\BlockBEEHelper::base_url() . '/extension/cryptapi/catalog/view/image/payment.png',
-            'qr_code_setting' => $this->config->get('payment_cryptapi_qrcode'),
+            'qr_code_setting' => $this->config->get('payment_blockbee_qrcode'),
             'order_timestamp' => $order['total'],
-            'order_cancelation_timeout' => $this->config->get('payment_cryptapi_order_cancelation_timeout'),
-            'refresh_value_interval' => $this->config->get('payment_cryptapi_refresh_values'),
+            'order_cancelation_timeout' => $this->config->get('payment_blockbee_order_cancelation_timeout'),
+            'refresh_value_interval' => $this->config->get('payment_blockbee_refresh_values'),
             'last_price_update' => $metaData['cryptapi_last_price_update'],
             'min_tx' => $metaData['cryptapi_min'],
             'min_tx_notice' => (string)$metaData['cryptapi_min'] . ' ' . strtoupper($cryptoCoin),
-            'color_scheme' => $this->config->get('payment_cryptapi_color_scheme'),
+            'color_scheme' => $this->config->get('payment_blockbee_color_scheme'),
             'conversion_timer' => (int)$conversion_timer,
             'cancel_timer' => (int)$cancel_timer,
             'crypto_allowed_value' => $crypto_allowed_value,
@@ -296,7 +296,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
     public function after_purchase(&$route, &$data, &$output)
     {
         // In case the extension is disabled, do nothing
-        if (!$this->config->get('payment_cryptapi_status')) {
+        if (!$this->config->get('payment_blockbee_status')) {
             return;
         }
 
@@ -399,7 +399,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
             $cryptapi_pending = 1;
         }
 
-        $counter_calc = (int)$metaData['cryptapi_last_price_update'] + (int)$this->config->get('payment_cryptapi_refresh_values') - time();
+        $counter_calc = (int)$metaData['cryptapi_last_price_update'] + (int)$this->config->get('payment_blockbee_refresh_values') - time();
         if (!$this->isOrderPaid($order) && $counter_calc <= 0) {
             $this->cron(false);
         }
@@ -443,9 +443,9 @@ class CryptAPI extends \Opencart\System\Engine\Controller
         $this->load->model('extension/cryptapi/payment/cryptapi');
         $this->response->addHeader('Content-Type: application/json');
 
-        $order_timeout = intval($this->config->get('payment_cryptapi_order_cancelation_timeout'));
-        $value_refresh = intval($this->config->get('payment_cryptapi_refresh_values'));
-        $qrcode_size = intval($this->config->get('payment_cryptapi_qrcode_size'));
+        $order_timeout = intval($this->config->get('payment_blockbee_order_cancelation_timeout'));
+        $value_refresh = intval($this->config->get('payment_blockbee_refresh_values'));
+        $qrcode_size = intval($this->config->get('payment_blockbee_qrcode_size'));
         $apiKey = $this->config->get('payment_blockbee_api_key');
         $response = $this->response->setOutput(json_encode(['status' => 'ok']));
 
@@ -537,7 +537,7 @@ class CryptAPI extends \Opencart\System\Engine\Controller
 
         $disable_conversion = $this->config->get('payment_cryptapi_disable_conversion');
 
-        $qrcode_size = $this->config->get('payment_cryptapi_qrcode_size');
+        $qrcode_size = $this->config->get('payment_blockbee_qrcode_size');
 
         $paid = $data['value_coin'];
 
